@@ -1,5 +1,6 @@
 const Task = require('../models/Task')
 const asyncWrapper = require('../middleware/async')
+const { createCustomError } = require('../errors/custom-error')
 
 const getAllTasks = asyncWrapper(async (req, res) => { 
   const tasks = await Task.find()
@@ -11,10 +12,12 @@ const createTask = asyncWrapper(async (req, res) => {
   res.status(201).json({ task })
 })
 
-const getTask = asyncWrapper(async (req, res) => { 
+const getTask = asyncWrapper(async (req, res, next) => { 
   const { id: taskId} = req.params
   const task = await Task.findById(taskId)
   if (!task) {
+    const error = createCustomError('not found', 404)
+    return next(error)
     return res.status(404).json({ msg: `no task found with id ${taskId}` })
   } 
   res.status(200).json({ task })
