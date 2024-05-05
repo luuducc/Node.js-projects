@@ -1,14 +1,29 @@
 const express = require('express')
 const app = express()
+const tasks = require('./routes/tasks')
+const mongoose = require('mongoose')
+require('dotenv').config()
 
+// middleware
+
+app.use(express.json())
 
 // routes
 app.get('/', (req, res) => {
   res.json('hello')
 })
 
+app.use('/api/v1/tasks', tasks)
+
 const port = 3000
 
-app.listen(port, () => {
-  console.log(`server is listening on http://localhost:${port}`)
-})
+
+const start= async () => {
+  await mongoose.connect(process.env.MONGO_URI)
+  console.log('connected to db')
+  app.listen(port, () => {
+    console.log(`server is listening on http://localhost:${port}`)
+  })
+}
+
+start()
