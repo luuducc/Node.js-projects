@@ -3,6 +3,7 @@ const app = express()
 const tasks = require('./routes/tasks')
 const mongoose = require('mongoose')
 require('dotenv').config()
+const notFound = require('./middleware/not-found')
 
 // middleware
 app.use(express.static('./public'))
@@ -14,6 +15,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/v1/tasks', tasks)
+app.use(notFound)
 
 const port = 3000
 
