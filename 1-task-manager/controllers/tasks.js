@@ -26,7 +26,7 @@ const getTask = async (req, res) => {
     if (!task) {
       return res.status(404).json({ msg: `no task found with id ${taskId}` })
     } 
-    res.status(200).json(task)
+    res.status(200).json({ task })
   } catch (error) {
     res.status(500).json({ error })
   }
