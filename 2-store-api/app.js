@@ -1,5 +1,5 @@
 require('dotenv').config()
-require('express-async-errors')
+require('express-async-errors') // just like async wrapper, will pass our error the custom error handler(if exist), or else pass to default error handler of Express
 const mongoose = require('mongoose')
 // async errors
 
@@ -21,7 +21,6 @@ app.get('/', (req, res) => {
 app.use('/api/v1/products', productsRouter)
 
 // products route
-
 
 app.use(notFoundMiddleware)
 app.use(errorMiddleware)

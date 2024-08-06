@@ -17,6 +17,7 @@ const getTask = asyncWrapper(async (req, res, next) => {
   const task = await Task.findById(taskId)
   if (!task) {
     const error = createCustomError('not found', 404)
+    throw error
     return next(error)
     return res.status(404).json({ msg: `no task found with id ${taskId}` })
   } 
@@ -26,8 +27,9 @@ const getTask = asyncWrapper(async (req, res, next) => {
 const updateTask = asyncWrapper(async (req, res) => { 
   const { id: taskId } = req.params
   const task = await Task.findOneAndUpdate({ _id: taskId}, req.body, {
-    new: true,
-    runValidators: true
+    new: true, // return the updated document, not the initial document
+    runValidators: true,
+    // overwrite: true // for PUT method, replace with the data from request
   })
   if (!task) {
     return res.status(404).json({ msg: `no task with id ${taskId}` })
